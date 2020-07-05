@@ -18,7 +18,7 @@ struct ContentView: View {
                 
                 if audioRecorder.recording == false {
                     Button(action: {self.audioRecorder.startRecording()}) {
-                        Image(systemName: "waveform.circle.fill")
+                        Image(systemName: "waveform.circle")
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 70, height: 70)
