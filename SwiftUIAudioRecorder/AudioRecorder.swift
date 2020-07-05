@@ -53,11 +53,27 @@ class AudioRecorder: NSObject, ObservableObject {
         do {
             audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
             audioRecorder.record()
+           
+            //Tracking Metering values here only
+//            Timer.scheduledTimer(withTimeInterval: 1000, repeats: true, block: { (timer: Timer) in
+//
+//                    //Start Metering Updates
+//                self.audioRecorder.updateMeters()
+//
+//                self.getDispersyPercent()
+//            })
 
             recording = true
         } catch {
             print("Could not start recording")
         }
+    }
+
+    
+    func getDispersyPercent() -> Float {
+        let decibels = audioRecorder.averagePower(forChannel: 0)
+        print(decibels)
+        return 0
     }
     
     func stopRecording() {
@@ -76,11 +92,13 @@ class AudioRecorder: NSObject, ObservableObject {
         for audio in directoryContents {
             let recording = Recording(fileURL: audio, createdAt: getFileDate(for: audio))
             recordings.append(recording)
+            print(recording)
         }
         
         recordings.sort(by: { $0.createdAt.compare($1.createdAt) == .orderedAscending})
         
         objectWillChange.send(self)
+        
     }
     
     func deleteRecording(urlsToDelete: [URL]) {
